@@ -1,4 +1,4 @@
-# C-Programing
+# C-Programming
 Basic concepts in C
 
 This projects contains small c programs exploring different C concepts (this is mostly related to a university course in c development).
