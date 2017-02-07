@@ -4,15 +4,21 @@
 #include <ctype.h>
 
 #define MAX_INPUT 10
+
+/* function pointer */
 typedef int (*calc)(int, int);
 
+/* function prototypes */
 int add(int, int);
 int subtract(int, int);
 int multiply(int, int);
 int divide(int, int);
 
+/* this doesnt accept any cmd line input,
+just default main function */
 int main(int argc, char * argv[]) {
 	
+	/* lots of magic numbers here, consider #defining */
 	calc calculate = NULL;
 	int a, b;
 	unsigned int i, j = 0;
@@ -31,10 +37,11 @@ int main(int argc, char * argv[]) {
 
 	printf("Input: ");
 
-	/* get input */
+	/* get input, this is not error checking or validating
+	(just assuming correct input */
 	fgets(raw_input, MAX_INPUT, stdin);
 
-	/* remove spaces */
+	/* remove spaces from input */
 	for (i = 0; i < strlen(raw_input); i++) {
 		if (raw_input[i] != ' ') {
 			filtered_input[j] = raw_input[i];
@@ -42,21 +49,23 @@ int main(int argc, char * argv[]) {
 		}
 	}
 
-	/* get option */
+	/* get selected option */
 	choice = tolower(filtered_input[0]); 	
 
-	/* get remainder of string */
+	/* get remainder of input */
 	j = 0;
 	for (i = 1; i < sizeof(filtered_input); i++) {
 		operands[j] = filtered_input[i];
 		j++;
 	}
 
+	/* get operands seperated by comma */
 	token = strtok(operands, delim);
 	a = (int)strtol(token, NULL, 10); /*convert token to int */
 	token = strtok(NULL, delim);
 	b = (int)strtol(token, NULL, 10); /*convert token to int */
 
+	/* assign function pointer and operations names, characters */
 	switch (choice) {
 		case 'a':
 			calculate = &add;
@@ -79,12 +88,15 @@ int main(int argc, char * argv[]) {
 			operator = '/';
 			break;
 		}
-
+	
+	/* print results */
+	/* note, divide is not handled correctly as information may be lost */
 	printf("%s selected, %d %c %d = %d\n\n", operation_name, a, operator, b, calculate(a,b));
 
 	return EXIT_SUCCESS;
 }
 
+/* functions */
 int add(int a, int b) {
 	return a + b;
 }
