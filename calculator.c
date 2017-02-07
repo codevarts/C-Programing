@@ -96,7 +96,7 @@ int main(int argc, char * argv[]) {
 	return EXIT_SUCCESS;
 }
 
-/* functions */
+/* functions, these along with the prototypes could be moved to a header file */
 int add(int a, int b) {
 	return a + b;
 }
