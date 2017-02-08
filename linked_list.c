@@ -52,7 +52,7 @@ node * get_new_node(data * data) {
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	new_node->data = data;
-
+			
 	return new_node;
 }
 
@@ -163,11 +163,13 @@ void delete_last(list * list) {
 
 void delete(list * list, node * node_to_delete) {
 
-		node * current = list->first;
+		node * current = list->head;
 		node * temp = NULL;
 
 		while (current != NULL) {
-			if (current->data->task_number == node_to_delete->data->task_number)
+			if (current->data->task_number == node_to_delete->data->task_number) {
+			/* TODO */
+			}
 		}
 
 }
@@ -195,7 +197,26 @@ void print_list_backward(list * list) {
 }
 
 void free_list(list * list) {
-	/* TODO */
+	
+	/* temp node to free */
+	node * temp, * current;
+
+	current = list->head;
+
+	while(current->next != NULL) {
+		temp = current;
+		current = current->next;
+
+		/* free data task_name */
+		free(temp->data->task_name);
+
+		/* free data */
+		free(temp->data);
+
+		/* free node */
+		free(temp);
+	}
+	
 }
 
 int main(void) {
@@ -245,6 +266,12 @@ int main(void) {
 	print_list(&taskList);	
 	
 	/* note: should free memory before exiting! */
-
+	free(task_data->task_name);
+	free(task_data2->task_name);
+	free(task_data);
+	free(task_data2);
+	free(new_task);
+	free(new_task2);	
+	free_list(&taskList);
 	return EXIT_SUCCESS;
 }
