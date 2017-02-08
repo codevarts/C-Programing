@@ -1,32 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
+
+#define LINE_LEN 25
 
 /* arbritary data for list */
 typedef struct data {
-
 	char * task_name;
 	int task_number;
 } data;
 
 typedef struct node {
-
 	struct data * data;
 	/* pointer to next node */
 	struct node * next;
+	/* pointer to previous node */
 	struct node * prev;
 } node;
 
 typedef struct list {
-
+	/* list head */
 	node * head;
+	/*list tail */
 	node * last;
+	/* number of items in list */
 	int num_nodes;
 } list;
 
 /* list status */
 int is_empty(list * list) {
+	/* check if head pointer is null */
 	if(list->head == NULL) {
 		return 1;
 	} else {
@@ -43,7 +46,9 @@ void init_list(list * list) {
 
 /* returns initialized node */
 node * get_new_node(data * data) {
+	/* allocate space for new node */
 	node * new_node = (node*)malloc(sizeof(node));
+	
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	new_node->data = data;
@@ -80,7 +85,7 @@ void insert_end(list * list, node * node_to_insert) {
 		current = current->next;
 	}
 
-	/* current next is pointing to last node so set new node to next of that */
+	/* current next is pointing to last node(NULL) so set new node to next of that */
 	current->next = node_to_insert;
 	node_to_insert->prev = current;
 	list->last = node_to_insert;
@@ -189,6 +194,10 @@ void print_list_backward(list * list) {
 			}
 }
 
+void free_list(list * list) {
+	/* TODO */
+}
+
 int main(void) {
 
 	list taskList;
@@ -197,17 +206,18 @@ int main(void) {
 	data * task_data = NULL;
 	data * task_data2= NULL;
 
+	/* allocate memory for the data */
 	task_data = (data*)malloc(sizeof(data));
 	task_data2 = (data*)malloc(sizeof(data));
 
 	/* task info */
-	task_data->task_name = (char*)malloc(sizeof(char) * 25);
-	strcpy(task_data->task_name, "Install new servers");
+	task_data->task_name = (char*)malloc(sizeof(char) * LINE_LEN);
+	strcpy(task_data->task_name, "Deploy application servers");
 	task_data->task_number = 1;
 
 	/* task info */
-	task_data2->task_name = (char*)malloc(sizeof(char) * 25);
-	strcpy(task_data2->task_name, "Update databases");
+	task_data2->task_name = (char*)malloc(sizeof(char) * LINE_LEN);
+	strcpy(task_data2->task_name, "Deploy database servers");
 	task_data2->task_number = 2;
 
 	/* add task info to node */
@@ -221,16 +231,20 @@ int main(void) {
 	insert_start(&taskList, new_task);
 	printf("Number of tasks: %d\n", taskList.num_nodes);
 
-	/* Add to end */
+	/* Add task to end */
 	insert_end(&taskList, new_task2);
 	printf("Number of tasks: %d\n", taskList.num_nodes);
 	print_list(&taskList);
+	
+	/* print list backwards for fun */
 	print_list_backward(&taskList);
 
 	/* remove start */
 	delete_start(&taskList);
 	printf("Number of tasks: %d\n", taskList.num_nodes);
 	print_list(&taskList);	
+	
+	/* note: should free memory before exiting! */
 
 	return EXIT_SUCCESS;
 }
