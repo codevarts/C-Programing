@@ -263,7 +263,7 @@ int main(void) {
 	/* remove start */
 	delete_start(&taskList);
 	printf("Number of tasks: %d\n", taskList.num_nodes);
-	print_list(&taskList);	
+	print_list(&taskList);
 	
 	/* note: should free memory before exiting! */
 	free(task_data->task_name);
